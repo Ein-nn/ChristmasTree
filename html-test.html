@@ -24,6 +24,10 @@
     </style>
 </head>
 <body>
+
+    <!-- todo 启动页面从人像抠图，流光效果 -->
+    <!-- todo 添加背景音乐和切换，烟花音效 -->
+
     <div id="info">Merry Christmas<br>To 你 ❤️</div>
 
     <!-- 引入 Three.js -->
@@ -66,6 +70,8 @@
             createSnowflakes(); // <-- 新增这一行
         }
 
+        
+        // todo 替换成粒子组成
         // 创建心形装饰
         function createHeart() {
             const shape = new THREE.Shape();
@@ -102,6 +108,8 @@
 
         // 创建粒子圣诞树 (分层 & 闪烁版)
         function createChristmasTree() {
+
+            // todo 层数要更多，树枝更宽，添加红金星星，底座
             const layers = [
                 { count: 1500, minHeight: -50, maxHeight: 0, maxRadius: 20 }, // 树干，稍微加宽
                 { count: 4000, minHeight: 0, maxHeight: 100, maxRadius: 80 }, // 底层，增加粒子数和宽度
