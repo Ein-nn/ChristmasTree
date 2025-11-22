@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>粒子圣诞树</title>
+    <title>ZPY圣诞快乐</title>
     <style>
         body {
             margin: 0;
@@ -21,15 +21,44 @@
             pointer-events: none; /* 不影响鼠标事件 */
             z-index: 10;
         }
+        #music-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #music-controls select, #music-controls button {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
 
     <!-- todo 启动页面从人像抠图，流光效果 -->
     <!-- todo 添加背景音乐和切换，烟花音效 -->
+    <div id="music-controls">
+        <select id="song-selector">
+            
+            <option value="musics/初雪-exo.mp3">初雪-exo</option>
+            <option value="musics/wewishyou.mp3">We Wish You</option>
+        </select>
+        <button id="play-pause-btn">Play</button>
+    </div>
 
-    <!-- <div id="info">Merry Christmas<br>To 你 ❤️</div> -->
-    <div id="info">Merry Christmas<br>test</div>
+    <audio id="bg-audio" loop>
+        <source src="musics/初雪-exo.mp3" type="audio/mpeg">
+        <source src="musics/wewishyou.mp3" type="audio/mpeg">
+        
+    </audio>
+
+    <div id="info">Merry Christmas To<br>活泼又可爱的 ZPY</div>
+    <!-- <div id="info">Merry Christmas<br>test</div> -->
 
     <!-- 引入 Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -71,6 +100,35 @@
             createSnowflakes(); // <-- 新增这一行
         }
 
+        // 音乐控制逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            const audioElement = document.getElementById('bg-audio');
+            const songSelector = document.getElementById('song-selector');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+
+            // 当选择框值改变时更新音频源并播放
+            songSelector.addEventListener('change', function() {
+                const selectedSong = this.value;
+                audioElement.src = selectedSong;
+                audioElement.play();
+                updateButtonState(true); // 更新按钮文本为“Pause”
+            });
+
+            // 播放/暂停按钮点击事件
+            playPauseBtn.addEventListener('click', function() {
+                if (audioElement.paused) {
+                    audioElement.play();
+                    updateButtonState(true);
+                } else {
+                    audioElement.pause();
+                    updateButtonState(false);
+                }
+            });
+
+            function updateButtonState(isPlaying) {
+                playPauseBtn.textContent = isPlaying ? 'Pause' : 'Play';
+            }
+        });
         
         // todo 替换成粒子组成
         // 创建心形装饰
@@ -169,7 +227,7 @@
                     colors[index * 3 + 2] = color.b;
 
                     // 大小：随机
-                    sizes[index] = Math.random() * 2.0 + 1.0;
+                    sizes[index] = Math.random() * 3.0 + 2.0;
 
                     // 闪烁标志：20% 的粒子会闪烁
                     blinkFlags[index] = Math.random() < 0.5 ? 1 : 0;
@@ -199,7 +257,7 @@
                         vBlink = blink;
                         vColor = color;
                         vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-                        gl_PointSize = size * (300.0 / -mvPosition.z); // sizeAttenuation
+                        gl_PointSize = size * (500.0 / -mvPosition.z); // sizeAttenuation
                         gl_Position = projectionMatrix * mvPosition;
                     }
                 `,
